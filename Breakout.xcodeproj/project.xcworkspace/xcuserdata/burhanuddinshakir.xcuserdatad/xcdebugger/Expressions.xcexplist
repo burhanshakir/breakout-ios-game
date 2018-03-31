@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "BreakoutVC.viewDidLoad():BreakoutVC.swift">
+      </ContextState>
+      <ContextState
+         contextName = "BreakoutVC.dragBoard(_:):BreakoutVC.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.gameView.boardView?.frame.origin.x">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BreakoutVC.displayBricks():BreakoutVC.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "gameView.bounds.size.width">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
