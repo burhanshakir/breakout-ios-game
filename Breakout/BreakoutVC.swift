@@ -33,14 +33,29 @@ class BreakoutVC: UIViewController, UIDynamicAnimatorDelegate {
         animator.delegate = self
         
         updateUI()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(BreakoutVC.gameOver), name: NSNotification.Name(rawValue: "game over"), object: nil)
+
     }
     
     func updateUI(){
+        createBottomWall()
         displayBricks()
         displayBoard()
         dropBalls()
+        
     }
     
+    func createBottomWall(){
+        
+        let wallPoint = CGPoint(x: 0, y: gameView.bounds.size.height)
+        let wallSize = CGSize(width: gameView.bounds.size.width, height: 2)
+        
+        let path = UIBezierPath(rect: CGRect(origin: wallPoint, size: wallSize))
+        
+        breakoutBehavior.addBoundary(path, identifier: "wall")
+        
+    }
     override func viewDidAppear(_ animated: Bool) {
         
         removeViews()
@@ -181,6 +196,25 @@ class BreakoutVC: UIViewController, UIDynamicAnimatorDelegate {
 //        animator.removeAllBehaviors()
 
       
+    }
+    
+    @objc func gameOver(){
+        
+        removeViews()
+        
+        let alert = UIAlertController(title: "Game Over", message: "Do you want to play again ?", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.default, handler: {action in
+            switch action.style{
+                
+            case .default:
+                self.updateUI()
+            case .cancel:
+                print("Cancel")
+            case .destructive:
+                print("Destructive")
+            }}))
+        
+        self.present(alert, animated: true, completion: nil)
     }
 
 }

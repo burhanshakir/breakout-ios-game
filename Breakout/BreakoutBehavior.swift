@@ -24,8 +24,11 @@ class BreakoutBehavior: UIDynamicBehavior, UICollisionBehaviorDelegate {
     
     private lazy var itemBehavior: UIDynamicItemBehavior = {
         let itemBehaviour =  UIDynamicItemBehavior()
-        itemBehaviour.allowsRotation = true
-        itemBehaviour.elasticity = 0.8
+        itemBehaviour.allowsRotation = false
+        itemBehaviour.elasticity = 1.0
+        itemBehaviour.friction = 0.0
+        itemBehaviour.resistance = 0.0
+        
         return itemBehaviour
     }()
     
@@ -36,8 +39,6 @@ class BreakoutBehavior: UIDynamicBehavior, UICollisionBehaviorDelegate {
         addChildBehavior(gravity)
         addChildBehavior(collider)
         addChildBehavior(itemBehavior)
-        addChildBehavior(pushBehavior)
-        
     }
     
     func addBrick(_ brick: UIView, named name: String) {
@@ -49,7 +50,6 @@ class BreakoutBehavior: UIDynamicBehavior, UICollisionBehaviorDelegate {
         
         collider.removeBoundary(withIdentifier: name as NSCopying)
 
-        
         collider.addBoundary(withIdentifier: name as NSCopying, for: UIBezierPath(rect: brick.frame))
         
         bricks[name] = brick
@@ -59,6 +59,10 @@ class BreakoutBehavior: UIDynamicBehavior, UICollisionBehaviorDelegate {
         
     }
     
+    func addBoundary(_ path:UIBezierPath, identifier:String){
+        collider.removeBoundary(withIdentifier: identifier as NSCopying)
+        collider.addBoundary(withIdentifier: identifier as NSCopying, for: path)
+    }
     
     func addBoardBoundary(_ board: UIView){
         collider.removeBoundary(withIdentifier: "boardItem" as NSCopying)
@@ -76,7 +80,7 @@ class BreakoutBehavior: UIDynamicBehavior, UICollisionBehaviorDelegate {
         
         
         pushBehavior = UIPushBehavior(items: balls, mode: UIPushBehaviorMode.instantaneous);
-        pushBehavior.setAngle( .pi / -4 , magnitude: 1);
+        pushBehavior.setAngle( .pi / -4 , magnitude: 0.2);
         pushBehavior.active = true
         
         addChildBehavior(pushBehavior)
@@ -97,7 +101,7 @@ class BreakoutBehavior: UIDynamicBehavior, UICollisionBehaviorDelegate {
         
         let brick:UIView = bricks[name as! String]!
         
-        brick.removeFromSuperview()
+        UIView.animate(withDuration: 1, animations: {brick.removeFromSuperview()})
     }
 
     func removeBall(_ ball: UIView) {
@@ -108,12 +112,32 @@ class BreakoutBehavior: UIDynamicBehavior, UICollisionBehaviorDelegate {
     }
     
     func collisionBehavior(_ behavior: UICollisionBehavior, beganContactFor item: UIDynamicItem, withBoundaryIdentifier identifier: NSCopying?, at p: CGPoint) {
-        if identifier as! String != "boardItem"{
-            print("TOUCHED BRICK")
+        
+        if identifier as! String == "wall"{
+            print("TOUCHED WALL")
             
-            remove(forIdentifier: identifier!)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "game over"), object: nil)
             
         }
+        else if identifier as! String == "boardItem"{
+            print("TOUCHED BRICK")
+            
+//            removeChildBehavior(pushBehavior)
+//            launchBall([item as! UIView], UIView())
+            
+            let linVeloc = itemBehavior.linearVelocity(for: item)
+            itemBehavior.addLinearVelocity(CGPoint(x: linVeloc.x/4, y: linVeloc.y/4), for: item)
+            
+        }
+            
+        else {
+            print("TOUCHED BRICK")
+
+            remove(forIdentifier: identifier!)
+
+        }
+        
+      
     }
     
 }
