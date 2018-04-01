@@ -14,6 +14,10 @@ class BreakoutVC: UIViewController, UIDynamicAnimatorDelegate {
     var boardView : BoardView?
     var ballView : BallView?
     
+    let defaults: UserDefaults = UserDefaults.standard
+
+    var isBallReleased : Bool = false
+    
     private var breakoutBehavior = BreakoutBehavior()
     
     private lazy var animator: UIDynamicAnimator = {
@@ -27,18 +31,37 @@ class BreakoutVC: UIViewController, UIDynamicAnimatorDelegate {
         
         animator.delegate = self
         
+        updateUI()
+    }
+    
+    func updateUI(){
         displayBricks()
         displayBoard()
         dropBall()
-     
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+//        removeAllViews()
+        updateUI()
+    }
+    
+    func removeAllViews(){
+        for subview in gameView.subviews{
+            subview.removeFromSuperview()
+        }
     }
     
     func displayBricks(){
         
         let brickWidth = gameView.bounds.size.width/5
         let brickHeight = 30
+        var numberOfBricks = 25
         
-        for index in 0...24{
+        if let bricks = defaults.object(forKey: "numberOfBricks") as? Int{
+            numberOfBricks = bricks
+        }
+        for index in 0...(numberOfBricks-1){
             
             let row = index / 5
             let column = index % 5
@@ -52,9 +75,11 @@ class BreakoutVC: UIViewController, UIDynamicAnimatorDelegate {
             brick.size = CGSize.init(width: brickWidth, height: 30)
             let brickView =  RectangleView(frame: brick)
             
-            breakoutBehavior.addBrick(brickView)
+            breakoutBehavior.addBrick(brickView, named: "Brick\(index)")
             gameView.addSubview(brickView)
         }
+        
+        
         
         
     }
@@ -70,7 +95,7 @@ class BreakoutVC: UIViewController, UIDynamicAnimatorDelegate {
         board.size = Constants.boardSize
         boardView =  BoardView(frame: board)
         
-        breakoutBehavior.addBoard(boardView!)
+//        breakoutBehavior.addBoard(boardView!)
         gameView.addSubview(boardView!)
         
     }
@@ -85,6 +110,7 @@ class BreakoutVC: UIViewController, UIDynamicAnimatorDelegate {
         ball.size = Constants.ballSize
         ballView =  BallView(frame: ball)
         
+        breakoutBehavior.addBall(ballView!)
         gameView.addSubview(ballView!)
     }
     
@@ -94,17 +120,18 @@ class BreakoutVC: UIViewController, UIDynamicAnimatorDelegate {
     }
 
     @IBAction func dragBoard(_ sender: UIPanGestureRecognizer) {
-        let point = sender.location(in: gameView)
-
         let translation = sender.translation(in: self.gameView)
         
-        print("X \(String(describing: self.boardView?.frame.origin.x))")
-        print("Y \(String(describing: self.boardView?.frame.origin.y))")
-        print("HY \(self.gameView.bounds.size.height - (self.boardView?.bounds.size.height)!)")
-
-        self.boardView?.center = CGPoint(x: point.x + translation.x, y: gameView.bounds.size.height - ((boardView?.bounds.size.height)!)  )
+        print("Board position while panning : \(String(describing: boardView?.frame.origin))")
+        print("Translation:\(translation)")
         
-        self.ballView?.center = CGPoint(x: point.x + translation.x, y: gameView.bounds.size.height - (self.boardView?.bounds.size.height)!/2 - (self.ballView?.bounds.size.height)!)
+        
+        boardView?.frame.origin.x += translation.x
+        
+        if !isBallReleased{
+            
+            ballView?.frame.origin.x += translation.x
+        }
 
         sender.setTranslation(CGPoint.zero, in: self.gameView)
 
@@ -116,8 +143,19 @@ class BreakoutVC: UIViewController, UIDynamicAnimatorDelegate {
 //        UIView.animate(withDuration: 1.5) {
 //            self.ballView?.center = CGPoint(x: point.x, y: point.y)
 //        }
+        print("Board position before launch: \(String(describing: boardView?.frame.origin))")
         
-        breakoutBehavior.launchBall(ballView!)
+        isBallReleased = true
+        breakoutBehavior.launchBall(ballView!, (boardView)!)
+        
+    }
+    
+    func dynamicAnimatorDidPause(_ animator: UIDynamicAnimator) {
+        print("Ball Stopped")
+        print("Board position after launch: \(String(describing: boardView?.frame.origin))")
+//        animator.removeAllBehaviors()
+
+      
     }
 
 }
