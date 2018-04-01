@@ -29,7 +29,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="naT-Ko-Bhx">
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="naT-Ko-Bhx">
                                                     <rect key="frame" x="16" y="8" width="288" height="29"/>
                                                     <segments>
                                                         <segment title="1"/>
@@ -121,9 +121,12 @@
                             <outlet property="delegate" destination="dkG-EE-uwG" id="I9h-BO-h29"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Settings" selectedImage="001-settings-gears" id="fsX-Os-Saf"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="001-settings-gears" selectedImage="001-settings-gears" id="fsX-Os-Saf"/>
                     <connections>
+                        <outlet property="ballSC" destination="naT-Ko-Bhx" id="Fax-eL-kPD"/>
+                        <outlet property="bounceSlider" destination="hoO-Zr-d5m" id="7Az-Jk-PSD"/>
                         <outlet property="bricksLbl" destination="kRv-wm-kYs" id="PQP-Gp-ZJJ"/>
+                        <outlet property="bricksStepper" destination="dwA-BL-kKC" id="tyf-XA-d3U"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8z7-eN-GHe" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -133,17 +136,6 @@
         <!--Breakout-->
         <scene sceneID="X4e-vP-pPd">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="43v-ZF-jYS" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <panGestureRecognizer minimumNumberOfTouches="1" id="9US-an-RKc">
-                    <connections>
-                        <action selector="dragBoard:" destination="9tG-65-vmQ" id="xhT-Ir-Oub"/>
-                    </connections>
-                </panGestureRecognizer>
-                <tapGestureRecognizer id="Urf-X9-EDR">
-                    <connections>
-                        <action selector="launchBall:" destination="9tG-65-vmQ" id="3vf-Tu-GE6"/>
-                    </connections>
-                </tapGestureRecognizer>
                 <viewController id="9tG-65-vmQ" customClass="BreakoutVC" customModule="Breakout" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="O0X-Ba-nPy">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -173,6 +165,17 @@
                         <outlet property="gameView" destination="IQq-F4-Ruk" id="C7Y-qB-dXc"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="43v-ZF-jYS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="9US-an-RKc">
+                    <connections>
+                        <action selector="dragBoard:" destination="9tG-65-vmQ" id="xhT-Ir-Oub"/>
+                    </connections>
+                </panGestureRecognizer>
+                <tapGestureRecognizer id="Urf-X9-EDR">
+                    <connections>
+                        <action selector="launchBall:" destination="9tG-65-vmQ" id="3vf-Tu-GE6"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="645.60000000000002" y="-198.35082458770617"/>
         </scene>

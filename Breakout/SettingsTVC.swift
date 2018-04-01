@@ -14,13 +14,25 @@ class SettingsTVC: UITableViewController {
     
     @IBOutlet weak var bricksLbl: UILabel!
     
+    @IBOutlet weak var ballSC: UISegmentedControl!
+    @IBOutlet weak var bricksStepper: UIStepper!
+    @IBOutlet weak var bounceSlider: UISlider!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let numberOfBalls = defaults.object(forKey: "numberOfBalls") as? Int {
-            bricksLbl.text = String(numberOfBalls)
+        if let numberOfbricks = defaults.object(forKey: "numberOfBricks") as? Int {
+            bricksLbl.text = String(numberOfbricks)
+            bricksStepper.value = Double(numberOfbricks)
         }
         
+        if let numberOfballs = defaults.object(forKey: "numberOfBalls") as? Int {
+            ballSC.selectedSegmentIndex = numberOfballs - 1
+        }
+        
+        if let bounce = defaults.object(forKey: "bounciness") as? Float {
+            bounceSlider.value = bounce
+        }
 
     }
 

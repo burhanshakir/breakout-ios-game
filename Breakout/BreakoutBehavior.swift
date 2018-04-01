@@ -8,12 +8,17 @@
 
 import UIKit
 
-class BreakoutBehavior: UIDynamicBehavior {
+var bricks: [String:UIView] = [:]
+
+class BreakoutBehavior: UIDynamicBehavior, UICollisionBehaviorDelegate {
     var gravity = UIGravityBehavior()
     
     private lazy var collider: UICollisionBehavior = {
         let collider = UICollisionBehavior()
         collider.translatesReferenceBoundsIntoBoundary = true
+        collider.collisionMode = .boundaries
+        collider.collisionDelegate=self
+
         return collider
     }()
     
@@ -36,31 +41,28 @@ class BreakoutBehavior: UIDynamicBehavior {
     }
     
     func addBrick(_ brick: UIView, named name: String) {
-        dynamicAnimator?.referenceView?.addSubview(brick)
+//        dynamicAnimator?.referenceView?.addSubview(brick)
         
-        collider.collisionMode = .boundaries
+//        collider.collisionMode = .boundaries
+//
+//        collider.addBoundary(withIdentifier: name as NSCopying, from: CGPoint(x:brick.bounds.size.width - brick.frame.origin.x, y : brick.bounds.size.height + brick.frame.origin.y), to: CGPoint(x :brick.bounds.size.width + brick.frame.origin.x, y : brick.bounds.size.height + brick.frame.origin.y))
         
-        collider.addBoundary(withIdentifier: name as NSCopying, from: CGPoint(x:brick.bounds.size.width - brick.frame.origin.x, y : brick.bounds.size.height + brick.frame.origin.y), to: CGPoint(x :brick.bounds.size.width + brick.frame.origin.x, y : brick.bounds.size.height + brick.frame.origin.y))
-        
-//        collider.addBoundary(withIdentifier: name as NSCopying, for: UIBezierPath(rect: brick.frame))
+        collider.removeBoundary(withIdentifier: name as NSCopying)
 
         
-        collider.addItem(brick)
-        itemBehavior.addItem(brick)
+        collider.addBoundary(withIdentifier: name as NSCopying, for: UIBezierPath(rect: brick.frame))
+        
+        bricks[name] = brick
+        
+//        collider.addItem(brick)
+//        itemBehavior.addItem(brick)
+        
     }
     
     
-    func addBoard(_ board: UIView) {
-        dynamicAnimator?.referenceView?.addSubview(board)
-        
-        collider.collisionMode = .boundaries
-        
-//        collider.addBoundary(withIdentifier: "Board" as NSCopying, from: CGPoint(x:board.bounds.size.width - board.frame.origin.x, y : board.bounds.size.height - board.frame.origin.y), to: CGPoint(x :board.bounds.size.width + board.frame.origin.x, y : board.bounds.size.height - board.frame.origin.y))
-
-        collider.addBoundary(withIdentifier: "BoardItem" as NSCopying, for: UIBezierPath(rect: board.frame))
-        
-        collider.addItem(board)
-        itemBehavior.addItem(board)
+    func addBoardBoundary(_ board: UIView){
+        collider.removeBoundary(withIdentifier: "boardItem" as NSCopying)
+        collider.addBoundary(withIdentifier: "boardItem" as NSCopying, for: UIBezierPath(rect: board.frame))
     }
     
     func addBall(_ ball : UIView){
@@ -70,10 +72,10 @@ class BreakoutBehavior: UIDynamicBehavior {
         itemBehavior.addItem(ball)
     }
     
-    func launchBall(_ ball: UIView, _ board: UIView) {
+    func launchBall(_ balls: [UIView], _ board: UIView) {
         
         
-        pushBehavior = UIPushBehavior(items: [ball], mode: UIPushBehaviorMode.instantaneous);
+        pushBehavior = UIPushBehavior(items: balls, mode: UIPushBehaviorMode.instantaneous);
         pushBehavior.setAngle( .pi / -4 , magnitude: 1);
         pushBehavior.active = true
         
@@ -82,5 +84,36 @@ class BreakoutBehavior: UIDynamicBehavior {
         print("Board position during launch1: \(String(describing: board.frame.origin))")
         
     }
-   
+    
+    func removeBrickAndBoard(_ view: UIView) {
+        
+        collider.removeAllBoundaries()
+        bricks.removeAll()
+        view.removeFromSuperview()
+    }
+    
+    func remove(forIdentifier name: NSCopying){
+        collider.removeBoundary(withIdentifier: name)
+        
+        let brick:UIView = bricks[name as! String]!
+        
+        brick.removeFromSuperview()
+    }
+
+    func removeBall(_ ball: UIView) {
+        gravity.removeItem(ball)
+        collider.removeItem(ball)
+        itemBehavior.removeItem(ball)
+        ball.removeFromSuperview()
+    }
+    
+    func collisionBehavior(_ behavior: UICollisionBehavior, beganContactFor item: UIDynamicItem, withBoundaryIdentifier identifier: NSCopying?, at p: CGPoint) {
+        if identifier as! String != "boardItem"{
+            print("TOUCHED BRICK")
+            
+            remove(forIdentifier: identifier!)
+            
+        }
+    }
+    
 }
