@@ -7,17 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DF4913CF207285A100A741C6 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4913CE207285A100A741C6 /* GameView.swift */; };
 		DF9F48E3206E443600FF3D7B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9F48E2206E443600FF3D7B /* AppDelegate.swift */; };
 		DF9F48E8206E443600FF3D7B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DF9F48E6206E443600FF3D7B /* Main.storyboard */; };
 		DF9F48EA206E443600FF3D7B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF9F48E9206E443600FF3D7B /* Assets.xcassets */; };
 		DF9F48ED206E443600FF3D7B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DF9F48EB206E443600FF3D7B /* LaunchScreen.storyboard */; };
 		DF9F48F7206E48EA00FF3D7B /* BreakoutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9F48F6206E48EA00FF3D7B /* BreakoutVC.swift */; };
 		DF9F48F9206E4A2100FF3D7B /* BreakoutBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9F48F8206E4A2100FF3D7B /* BreakoutBehavior.swift */; };
-		DF9F48FB206E4D6100FF3D7B /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9F48FA206E4D6100FF3D7B /* GameView.swift */; };
 		DF9F4901206FB83D00FF3D7B /* SettingsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9F4900206FB83D00FF3D7B /* SettingsTVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DF4913CE207285A100A741C6 /* GameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameView.swift; path = ../../../../../../GameView.swift; sourceTree = "<group>"; };
 		DF9F48DF206E443600FF3D7B /* Breakout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Breakout.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF9F48E2206E443600FF3D7B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DF9F48E7206E443600FF3D7B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -26,7 +27,6 @@
 		DF9F48EE206E443600FF3D7B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DF9F48F6206E48EA00FF3D7B /* BreakoutVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakoutVC.swift; sourceTree = "<group>"; };
 		DF9F48F8206E4A2100FF3D7B /* BreakoutBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakoutBehavior.swift; sourceTree = "<group>"; };
-		DF9F48FA206E4D6100FF3D7B /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		DF9F4900206FB83D00FF3D7B /* SettingsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -65,9 +65,9 @@
 				DF9F48E9206E443600FF3D7B /* Assets.xcassets */,
 				DF9F48EB206E443600FF3D7B /* LaunchScreen.storyboard */,
 				DF9F48EE206E443600FF3D7B /* Info.plist */,
+				DF4913CE207285A100A741C6 /* GameView.swift */,
 				DF9F48F6206E48EA00FF3D7B /* BreakoutVC.swift */,
 				DF9F48F8206E4A2100FF3D7B /* BreakoutBehavior.swift */,
-				DF9F48FA206E4D6100FF3D7B /* GameView.swift */,
 				DF9F4900206FB83D00FF3D7B /* SettingsTVC.swift */,
 			);
 			path = Breakout;
@@ -147,9 +147,9 @@
 			files = (
 				DF9F48F9206E4A2100FF3D7B /* BreakoutBehavior.swift in Sources */,
 				DF9F48E3206E443600FF3D7B /* AppDelegate.swift in Sources */,
-				DF9F48FB206E4D6100FF3D7B /* GameView.swift in Sources */,
 				DF9F4901206FB83D00FF3D7B /* SettingsTVC.swift in Sources */,
 				DF9F48F7206E48EA00FF3D7B /* BreakoutVC.swift in Sources */,
+				DF4913CF207285A100A741C6 /* GameView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

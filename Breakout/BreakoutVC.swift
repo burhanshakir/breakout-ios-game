@@ -11,6 +11,7 @@ import UIKit
 class BreakoutVC: UIViewController, UIDynamicAnimatorDelegate {
     @IBOutlet weak var gameView: GameView!
     
+    @IBOutlet weak var scoreLbl: UILabel!
     var boardView : BoardView?
     var ballView : BallView?
     
@@ -18,8 +19,12 @@ class BreakoutVC: UIViewController, UIDynamicAnimatorDelegate {
 
     var isBallReleased : Bool = false
     var balls : [BallView] = []
+    var score = 0
+    let ballOffSet = 10
     
     private var breakoutBehavior = BreakoutBehavior()
+   
+    // MARK : Animator
     
     private lazy var animator: UIDynamicAnimator = {
         let animator = UIDynamicAnimator(referenceView: self.gameView)
@@ -34,15 +39,31 @@ class BreakoutVC: UIViewController, UIDynamicAnimatorDelegate {
         
         updateUI()
         
+        // Setting up notification observer to update UI on basis of events in the game
         NotificationCenter.default.addObserver(self, selector: #selector(BreakoutVC.gameOver), name: NSNotification.Name(rawValue: "game over"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(BreakoutVC.increaseScore), name: NSNotification.Name(rawValue: "add score"), object: nil)
 
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+        removeViews()
+        updateUI()
+    }
+    
+    // MARK: Game Objects
     
     func updateUI(){
         createBottomWall()
         displayBricks()
         displayBoard()
         dropBalls()
+        
+        isBallReleased = false
+        score = 0
+        
+        scoreLbl.text = "Score: \(String(score))"
         
     }
     
@@ -56,11 +77,7 @@ class BreakoutVC: UIViewController, UIDynamicAnimatorDelegate {
         breakoutBehavior.addBoundary(path, identifier: "wall")
         
     }
-    override func viewDidAppear(_ animated: Bool) {
-        
-        removeViews()
-        updateUI()
-    }
+    
     
     func removeViews(){
         for view in gameView.subviews {
@@ -102,6 +119,7 @@ class BreakoutVC: UIViewController, UIDynamicAnimatorDelegate {
             let brickView =  RectangleView(frame: brick)
             
             breakoutBehavior.addBrick(brickView, named: "Brick\(index)")
+
             gameView.addSubview(brickView)
         }
         
@@ -118,7 +136,8 @@ class BreakoutVC: UIViewController, UIDynamicAnimatorDelegate {
         board.size = Constants.boardSize
         boardView =  BoardView(frame: board)
         
-        breakoutBehavior.addBoardBoundary(boardView!)
+//        breakoutBehavior.addBoardBoundary(boardView!)
+        breakoutBehavior.addBoundary(UIBezierPath(rect: board), identifier: "boardItem")
         gameView.addSubview(boardView!)
         
     }
@@ -126,9 +145,14 @@ class BreakoutVC: UIViewController, UIDynamicAnimatorDelegate {
     func dropBalls(){
         
         var numberOfBalls = 1
+        var elasticity = 0.5
         
         if let balls = defaults.object(forKey: "numberOfBalls") as? Int{
             numberOfBalls = balls
+        }
+        
+        if let bounce = defaults.object(forKey: "bounciness") as? Int{
+            elasticity = Double(bounce)
         }
         
         for index in 1...numberOfBalls {
@@ -136,13 +160,14 @@ class BreakoutVC: UIViewController, UIDynamicAnimatorDelegate {
             var ball = CGRect()
             
             ball.origin = CGPoint.zero
-            ball.origin.x = gameView.bounds.size.width/2 - Constants.ballSize.width/2 + CGFloat(4 * index)
+            ball.origin.x = gameView.bounds.size.width/2 - Constants.ballSize.width/2 + CGFloat(ballOffSet * index)
             ball.origin.y = gameView.bounds.size.height - Constants.boardSize.height * 1.5 - Constants.ballSize.height
             
             ball.size = Constants.ballSize
             ballView =  BallView(frame: ball)
             
-            breakoutBehavior.addBall(ballView!)
+            breakoutBehavior.addBall(ballView!, elasticity: elasticity)
+            
             gameView.addSubview(ballView!)
             
             balls.append(ballView!)
@@ -156,21 +181,29 @@ class BreakoutVC: UIViewController, UIDynamicAnimatorDelegate {
         static let ballSize = CGSize.init(width: 20, height: 20)
     }
 
+    // MARK: Actions
+    
     @IBAction func dragBoard(_ sender: UIPanGestureRecognizer) {
-        let translation = sender.translation(in: self.gameView)
         
-        print("Board position while panning : \(String(describing: boardView?.frame.origin))")
-        print("Translation:\(translation)")
-        
-        
-        boardView?.frame.origin.x += translation.x
-        breakoutBehavior.addBoardBoundary(boardView!)
-        if !isBallReleased{
+        if isBallReleased{
             
-            ballView?.frame.origin.x += translation.x
+            let translation = sender.translation(in: self.gameView)
+            
+            print("Board position while panning : \(String(describing: boardView?.frame.origin))")
+            print("Translation:\(translation)")
+            
+            
+            boardView?.frame.origin.x += translation.x
+            breakoutBehavior.addBoardBoundary(boardView!)
+            if !isBallReleased{
+                
+                ballView?.frame.origin.x += translation.x
+            }
+            
+            sender.setTranslation(CGPoint.zero, in: self.gameView)
+            
         }
-
-        sender.setTranslation(CGPoint.zero, in: self.gameView)
+        
         
 
     }
@@ -183,9 +216,12 @@ class BreakoutVC: UIViewController, UIDynamicAnimatorDelegate {
 //        }
         print("Board position before launch: \(String(describing: boardView?.frame.origin))")
         
-        isBallReleased = true
+        if !isBallReleased{
+            isBallReleased = true
+            
+            breakoutBehavior.launchBall(balls, (boardView)!)
+        }
         
-       breakoutBehavior.launchBall(balls, (boardView)!)
         
         
     }
@@ -198,6 +234,7 @@ class BreakoutVC: UIViewController, UIDynamicAnimatorDelegate {
       
     }
     
+    // MARK: Notification event functions
     @objc func gameOver(){
         
         removeViews()
@@ -216,9 +253,17 @@ class BreakoutVC: UIViewController, UIDynamicAnimatorDelegate {
         
         self.present(alert, animated: true, completion: nil)
     }
+    
+    @objc func increaseScore(){
+        
+        score = score + 1
+        scoreLbl.text = "Score: \(String(score))"
+        
+    }
 
 }
 
+// Custom classes for game objects
 class RectangleView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)

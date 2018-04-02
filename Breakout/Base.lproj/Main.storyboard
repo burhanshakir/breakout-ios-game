@@ -65,7 +65,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="25" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kRv-wm-kYs">
                                                     <rect key="frame" x="16" y="11" width="42" height="21"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="42" id="9Hg-LR-taJ"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="42" id="9Hg-LR-taJ"/>
                                                         <constraint firstAttribute="height" constant="21" id="yQl-cI-svP"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -83,6 +83,7 @@
                                                 <constraint firstItem="dwA-BL-kKC" firstAttribute="centerX" secondItem="ZPe-wG-xkW" secondAttribute="centerX" id="KNS-Ag-ufu"/>
                                                 <constraint firstItem="dwA-BL-kKC" firstAttribute="centerY" secondItem="ZPe-wG-xkW" secondAttribute="centerY" id="Kdj-1I-G7E"/>
                                                 <constraint firstItem="kRv-wm-kYs" firstAttribute="top" secondItem="ZPe-wG-xkW" secondAttribute="topMargin" id="Wl2-L0-cyv"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="kRv-wm-kYs" secondAttribute="trailingMargin" id="lA1-rn-K3r"/>
                                                 <constraint firstItem="kRv-wm-kYs" firstAttribute="leading" secondItem="ZPe-wG-xkW" secondAttribute="leadingMargin" id="n2T-OU-UvO"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -98,7 +99,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="25" minValue="0.0" maxValue="50" translatesAutoresizingMaskIntoConstraints="NO" id="hoO-Zr-d5m">
+                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="hoO-Zr-d5m">
                                                     <rect key="frame" x="14" y="8" width="292" height="29"/>
                                                     <connections>
                                                         <action selector="bounceChanged:" destination="dkG-EE-uwG" eventType="valueChanged" id="vyL-8c-Ebo"/>
@@ -142,7 +143,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IQq-F4-Ruk" customClass="GameView" customModule="Breakout" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="20" width="320" height="499"/>
+                                <rect key="frame" x="0.0" y="40" width="320" height="479"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                                 <connections>
@@ -150,19 +151,30 @@
                                     <outletCollection property="gestureRecognizers" destination="Urf-X9-EDR" appends="YES" id="8sh-S5-Gil"/>
                                 </connections>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score: 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bsq-Ek-e2Q">
+                                <rect key="frame" x="16" y="16" width="47.5" height="20"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="IQq-F4-Ruk" firstAttribute="leading" secondItem="fTL-Pa-zVH" secondAttribute="leading" id="1QU-bo-26p"/>
+                            <constraint firstItem="bsq-Ek-e2Q" firstAttribute="leading" secondItem="fTL-Pa-zVH" secondAttribute="leading" constant="16" id="8mo-gw-AHE"/>
                             <constraint firstItem="IQq-F4-Ruk" firstAttribute="trailing" secondItem="fTL-Pa-zVH" secondAttribute="trailing" id="Qeg-eN-75d"/>
                             <constraint firstItem="IQq-F4-Ruk" firstAttribute="bottom" secondItem="fTL-Pa-zVH" secondAttribute="bottom" id="SIN-w0-fsL"/>
-                            <constraint firstItem="IQq-F4-Ruk" firstAttribute="top" secondItem="O0X-Ba-nPy" secondAttribute="top" constant="20" id="dWQ-1e-y0G"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="bsq-Ek-e2Q" secondAttribute="trailing" constant="20" symbolic="YES" id="YUZ-Ge-8cG"/>
+                            <constraint firstItem="IQq-F4-Ruk" firstAttribute="top" secondItem="O0X-Ba-nPy" secondAttribute="top" constant="40" id="dWQ-1e-y0G"/>
+                            <constraint firstItem="bsq-Ek-e2Q" firstAttribute="top" secondItem="O0X-Ba-nPy" secondAttribute="top" constant="16" id="qkr-Oy-E3d"/>
+                            <constraint firstItem="IQq-F4-Ruk" firstAttribute="top" secondItem="bsq-Ek-e2Q" secondAttribute="bottom" constant="4" id="zDm-aQ-Bz2"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="fTL-Pa-zVH"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Breakout" image="002-gamepad-controller" id="HMD-3Q-Cqh"/>
                     <connections>
                         <outlet property="gameView" destination="IQq-F4-Ruk" id="C7Y-qB-dXc"/>
+                        <outlet property="scoreLbl" destination="bsq-Ek-e2Q" id="mH3-xI-BLA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="43v-ZF-jYS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -177,7 +189,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="645.60000000000002" y="-198.35082458770617"/>
+            <point key="canvasLocation" x="645" y="-198.59154929577466"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="iXE-aS-CRi">

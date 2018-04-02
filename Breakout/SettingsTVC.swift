@@ -70,9 +70,5 @@ class SettingsTVC: UITableViewController {
         defaults.set(sender.value, forKey: "bounciness")
         defaults.synchronize()
     }
-    
-    
-
-
 
 }

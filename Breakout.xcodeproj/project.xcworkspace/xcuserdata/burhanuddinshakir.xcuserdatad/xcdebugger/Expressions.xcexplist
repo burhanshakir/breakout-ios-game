@@ -3,10 +3,10 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "BreakoutVC.dropBalls():BreakoutVC.swift">
+         contextName = "BreakoutVC.increaseScore():BreakoutVC.swift">
          <PersistentStrings>
             <PersistentString
-               value = "defaults.object(forKey: &quot;numberOfBalls&quot;) as? Int">
+               value = "score">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -22,6 +22,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "BreakoutVC.dropBalls():BreakoutVC.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "defaults.object(forKey: &quot;numberOfBalls&quot;) as? Int">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "BreakoutVC.dragBoard(_:):BreakoutVC.swift">
          <PersistentStrings>
             <PersistentString
@@ -30,15 +38,15 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "BreakoutVC.removeViews():BreakoutVC.swift">
-      </ContextState>
-      <ContextState
          contextName = "BreakoutVC.launchBall(_:):BreakoutVC.swift">
          <PersistentStrings>
             <PersistentString
                value = "balls">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BreakoutVC.removeViews():BreakoutVC.swift">
       </ContextState>
       <ContextState
          contextName = "BreakoutVC.displayBricks():BreakoutVC.swift">
