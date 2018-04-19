@@ -194,7 +194,8 @@ class BreakoutVC: UIViewController, UIDynamicAnimatorDelegate {
             
             
             boardView?.frame.origin.x += translation.x
-            breakoutBehavior.addBoardBoundary(boardView!)
+//             breakoutBehavior.addBoardBoundary(boardView!)
+            breakoutBehavior.addBoundary(UIBezierPath(rect: (boardView?.frame)!), identifier: "boardItem")
             if !isBallReleased{
                 
                 ballView?.frame.origin.x += translation.x
